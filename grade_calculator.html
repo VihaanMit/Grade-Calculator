@@ -1,0 +1,177 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Grade Calculator</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f7f7f7;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+            }
+
+            .container {
+                background-color: #fff;
+                padding: 20px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
+                width: 100%;
+                max-width: 600px;
+            }
+
+            h1 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            table {
+                width: 100%;
+                margin-bottom: 20px;
+                border-collapse: collapse;
+            }
+
+            table th, table td {
+                padding: 12px;
+                text-align: center;
+                border: 1px solid #ddd;
+            }
+
+            table th {
+                background-color: #4CAF50;
+                color: white;
+            }
+
+            input[type="text"], input[type="number"] {
+                width: 100%;
+                padding: 8px;
+                margin: 5px 0;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+
+            button {
+                width: 100%;
+                padding: 10px;
+                font-size: 1.2rem;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+            button:hover {
+                background-color: #45a049;
+            }
+
+            .result {
+                text-align: center;
+                margin-top: 20px;
+            }
+
+            .result h2 {
+                font-size: 1.5rem;
+                color: #333;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Grade Calculator</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Grade Category</th>
+                        <th>Earned Points</th>
+                        <th>Max Points</th>
+                        <th>Category Weightage (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" placeholder="e.g. Homework"></td>
+                        <td><input type="number" placeholder="Earned Points"></td>
+                        <td><input type="number" placeholder="Max Points"></td>
+                        <td><input id="weightage" class="weightage" type="number" placeholder="Weightage %"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" placeholder="e.g. Tests"></td>
+                        <td><input type="number" placeholder="Earned Points"></td>
+                        <td><input type="number" placeholder="Max Points"></td>
+                        <td><input id="weightage" class="weightage" type="number" placeholder="Weightage %"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" placeholder="e.g. Quizzes"></td>
+                        <td><input type="number" placeholder="Earned Points"></td>
+                        <td><input type="number" placeholder="Max Points"></td>
+                        <td><input id="weightage" class="weightage" type="number" placeholder="Weightage %"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" placeholder="e.g. Projects"></td>
+                        <td><input type="number" placeholder="Earned Points"></td>
+                        <td><input type="number" placeholder="Max Points"></td>
+                        <td><input id="weightage" type="number" class="weightage" placeholder="Weightage %"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" placeholder="e.g. Final Exam"></td>
+                        <td><input type="number" placeholder="Earned Points"></td>
+                        <td><input type="number" placeholder="Max Points"></td>
+                        <td><input id="weightage" class="weightage" type="number" placeholder="Weightage %"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button id="calculate">Calculate Grade</button>
+            <div class="result">
+                <h2>Total Grade: <span id="total_grade">0%</span></h2>
+            </div>
+        </div>
+    </body>
+    <script>  
+        document.getElementById('calculate').addEventListener('click', function(){
+            let total_weightage=0
+            let percent=0;
+            let rows=document.querySelectorAll('tbody tr');
+            rows.forEach(function(row) {
+                let weightage = parseFloat(row.querySelector('td:nth-child(4) input').value);
+                if(!isNaN(weightage)){
+                    total_weightage+=weightage;
+                }
+            })
+            rows.forEach(function(row) {
+                let earnedPoints = parseFloat(row.querySelector('td:nth-child(2) input').value);
+                let maxPoints = parseFloat(row.querySelector('td:nth-child(3) input').value);
+                let weightage = parseFloat(row.querySelector('td:nth-child(4) input').value);
+                if(!isNaN(earnedPoints) && !isNaN(maxPoints) && !isNaN(weightage)){
+                    percent+=100*(earnedPoints/maxPoints)*(weightage/total_weightage);
+                }
+            })
+            if(percent>=90){
+                document.getElementById('total_grade').style.color='green'
+                document.getElementById('total_grade').innerHTML=`${percent.toFixed(2)}%`+ " (A)";
+            }else if(percent>=80){
+                document.getElementById('total_grade').style.color='lightblue'
+                document.getElementById('total_grade').innerHTML=`${percent.toFixed(2)}%`+ " (B)";
+            }else if(percent>=70){
+                document.getElementById('total_grade').style.color='red'
+                document.getElementById('total_grade').innerHTML=`${percent.toFixed(2)}%`+ " (C)";
+            }else if(percent>=60){
+                document.getElementById('total_grade').style.color='red'
+                document.getElementById('total_grade').innerHTML=`${percent.toFixed(2)}%`+ " (D)";
+            }else{
+                document.getElementById('total_grade').style.color='red'
+                document.getElementById('total_grade').innerHTML=`${percent.toFixed(2)}%`+ " (F)";
+            }
+        });
+    </script>
+</html>
